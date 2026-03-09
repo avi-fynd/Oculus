@@ -24,8 +24,8 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
         issues.push({
             id: 'a11y-missing-alt',
             title: `${dom.imagesWithoutAlt} image(s) missing alt text`,
-            category: 'accessibility',
-            severity: dom.imagesWithoutAlt > 3 ? 'critical' : 'major',
+            category: 'Accessibility',
+            severity: dom.imagesWithoutAlt > 3 ? 'high' : 'medium',
             description: `Found ${dom.imagesWithoutAlt} images without alt attributes. Screen readers cannot describe these images to users.`,
             evidence: `${dom.imagesWithoutAlt} <img> elements missing alt attribute`,
             impact: 'Screen reader users will not understand the content or purpose of these images.',
@@ -39,7 +39,7 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
         issues.push({
             id: 'a11y-missing-labels',
             title: `${dom.inputsWithoutLabels} form input(s) missing labels`,
-            category: 'accessibility',
+            category: 'Accessibility',
             severity: 'critical',
             description: `Found ${dom.inputsWithoutLabels} form inputs without associated labels.`,
             evidence: `${dom.inputsWithoutLabels} <input>/<select>/<textarea> elements without <label>`,
@@ -57,8 +57,8 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
             issues.push({
                 id: 'a11y-no-h1',
                 title: 'Page is missing an H1 heading',
-                category: 'accessibility',
-                severity: 'major',
+                category: 'Accessibility',
+                severity: 'high',
                 description: 'No <h1> element was found. Each page should have exactly one <h1> heading.',
                 evidence: `Heading levels found: ${[...new Set(dom.headingLevels)].sort().map(h => `h${h}`).join(', ')}`,
                 impact: 'Screen reader users and search engines rely on <h1> to understand the main topic.',
@@ -73,7 +73,7 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
                 issues.push({
                     id: `a11y-heading-skip-${i}`,
                     title: 'Heading levels are skipped',
-                    category: 'accessibility',
+                    category: 'Accessibility',
                     severity: 'minor',
                     description: `Heading hierarchy jumps from h${sorted[i - 1]} to h${sorted[i]}, skipping levels.`,
                     evidence: `Heading sequence: ${sorted.map(h => `h${h}`).join(' → ')}`,
@@ -91,7 +91,7 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
         issues.push({
             id: 'a11y-no-skip-link',
             title: 'No skip navigation link found',
-            category: 'accessibility',
+            category: 'Accessibility',
             severity: 'minor',
             description: 'The page does not have a "skip to main content" link.',
             evidence: 'No anchor link targeting #main-content or similar found at the top of the page.',
@@ -106,8 +106,8 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
         issues.push({
             id: 'a11y-no-main-landmark',
             title: 'Missing <main> landmark',
-            category: 'accessibility',
-            severity: 'major',
+            category: 'Accessibility',
+            severity: 'high',
             description: 'No <main> element or role="main" was found.',
             evidence: 'Document structure is missing a main landmark region.',
             impact: 'Screen reader users cannot quickly navigate to the primary content.',
@@ -120,7 +120,7 @@ export function checkAccessibility(dom: DOMInfo): AuditIssue[] {
         issues.push({
             id: 'a11y-no-nav-landmark',
             title: 'Missing <nav> landmark',
-            category: 'accessibility',
+            category: 'Accessibility',
             severity: 'minor',
             description: 'The page has multiple links but no <nav> landmark to identify the navigation area.',
             evidence: `${dom.linkCount} links found but no <nav> element`,

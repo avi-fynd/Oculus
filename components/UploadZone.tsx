@@ -127,11 +127,11 @@ export default function UploadZone({ onFileSelect, selectedFile, onClear }: Uplo
                             <path d="M20 14V26M14 20H26" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>
                     </div>
-                    <p className={styles.placeholderTitle}>Drop your screenshot here</p>
-                    <p className={styles.placeholderSub}>
+                    <p className={styles.placeholderTitle}>Click to Upload or Drop your UI here</p>
+                    {/* <p className={styles.placeholderSub}>
                         or <span className={styles.browseLink}>browse files</span>
-                    </p>
-                    <p className={styles.placeholderHint}>PNG, JPG, or WebP · Max 10MB</p>
+                    </p> */}
+                    <p className={styles.placeholderHint}>PNG, JPG, or Webp Supported. Max 10MB</p>
                 </div>
             )}
 

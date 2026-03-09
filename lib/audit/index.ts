@@ -13,7 +13,8 @@ function computeScore(issues: AuditIssue[]): number {
     issues.forEach((issue) => {
         switch (issue.severity) {
             case 'critical': deductions += 15; break;
-            case 'major': deductions += 8; break;
+            case 'high': deductions += 8; break;
+            case 'medium': deductions += 5; break;
             case 'minor': deductions += 3; break;
         }
     });
@@ -30,24 +31,23 @@ function scoreToGrade(score: number): string {
 
 function getCategoryScores(issues: AuditIssue[]): CategoryScore[] {
     const categories: IssueCategory[] = [
-        'accessibility', 'readability', 'layout', 'mobile', 'navigation', 'contrast', 'ux-heuristic'
+        'User Navigation',
+        'Visual Hierarchy',
+        'Readability',
+        'Forms & Input',
+        'Calls-to-Action',
+        'User Trust',
+        'System Status',
+        'Cognitive Load',
+        'Mobile Usability',
+        'Accessibility'
     ];
-
-    const labels: Record<IssueCategory, string> = {
-        accessibility: 'Accessibility',
-        readability: 'Readability',
-        layout: 'Layout',
-        mobile: 'Mobile UX',
-        navigation: 'Navigation',
-        contrast: 'Contrast',
-        'ux-heuristic': 'UX Heuristics',
-    };
 
     return categories.map((cat) => {
         const catIssues = issues.filter((i) => i.category === cat);
         return {
             category: cat,
-            label: labels[cat],
+            label: cat, // The category itself is now a nice label
             score: computeScore(catIssues),
             issueCount: catIssues.length,
         };
@@ -153,11 +153,15 @@ export function buildResult(
     aiIssues: AuditIssue[],
     summary: string,
     url?: string,
+    aiOverallScore?: number
 ): AuditResult {
     const allIssues = [...issues, ...aiIssues];
-    const score = computeScore(allIssues);
-    const grade = scoreToGrade(score);
     const categoryScores = getCategoryScores(allIssues);
+
+    // Calculate overall score as the average of domain scores
+    const score = categoryScores.reduce((acc, cat) => acc + cat.score, 0) / categoryScores.length;
+
+    const grade = scoreToGrade(score);
 
     return {
         id,

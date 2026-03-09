@@ -22,7 +22,12 @@ export async function captureUrl(url: string): Promise<CaptureResult> {
 
         // Desktop viewport
         await page.setViewport({ width: 1440, height: 900 });
-        await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+        const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 30000 });
+
+        if (response && response.status() === 403) {
+            throw new Error('ACCESS_DENIED');
+        }
+
         await page.waitForSelector('body', { timeout: 5000 });
 
         // Take full-page desktop screenshot

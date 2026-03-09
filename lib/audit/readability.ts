@@ -19,8 +19,8 @@ export function checkReadability(elements: TextElement[]): AuditIssue[] {
             issues.push({
                 id: `readability-fontsize-${i}`,
                 title: `Small font size on ${el.element}`,
-                category: 'readability',
-                severity: el.fontSize < 12 ? 'critical' : 'major',
+                category: 'Readability',
+                severity: el.fontSize < 12 ? 'critical' : 'high',
                 description: `Text in "${el.element}" is ${el.fontSize}px. Body text should be at least 16px for comfortable reading.`,
                 evidence: `Font size: ${el.fontSize}px`,
                 impact: 'Small text increases cognitive load and is difficult to read on mobile devices.',
@@ -34,8 +34,8 @@ export function checkReadability(elements: TextElement[]): AuditIssue[] {
             issues.push({
                 id: `readability-lineheight-${i}`,
                 title: `Tight line spacing on ${el.element}`,
-                category: 'readability',
-                severity: el.lineHeight < 1.2 ? 'major' : 'minor',
+                category: 'Readability',
+                severity: el.lineHeight < 1.2 ? 'high' : 'minor',
                 description: `Line height of ${el.lineHeight} on "${el.element}" is below the recommended 1.4–1.6 range.`,
                 evidence: `Line height: ${el.lineHeight}, Font size: ${el.fontSize}px`,
                 impact: 'Tight line spacing makes blocks of text harder to read, especially for users with dyslexia or low vision.',
@@ -50,8 +50,8 @@ export function checkReadability(elements: TextElement[]): AuditIssue[] {
                 issues.push({
                     id: `readability-linelength-long-${i}`,
                     title: `Wide text lines on ${el.element}`,
-                    category: 'readability',
-                    severity: el.lineLength > 100 ? 'major' : 'minor',
+                    category: 'Readability',
+                    severity: el.lineLength > 100 ? 'high' : 'minor',
                     description: `Text lines in "${el.element}" are approximately ${el.lineLength} characters wide. Optimal reading length is 45–75 characters.`,
                     evidence: `Estimated line length: ~${el.lineLength} characters`,
                     impact: 'Long lines make it difficult for the eye to track back to the start of the next line.',
@@ -62,7 +62,7 @@ export function checkReadability(elements: TextElement[]): AuditIssue[] {
                 issues.push({
                     id: `readability-linelength-short-${i}`,
                     title: `Narrow text lines on ${el.element}`,
-                    category: 'readability',
+                    category: 'Readability',
                     severity: 'minor',
                     description: `Text lines in "${el.element}" are approximately ${el.lineLength} characters wide, which is too narrow for comfortable reading.`,
                     evidence: `Estimated line length: ~${el.lineLength} characters`,

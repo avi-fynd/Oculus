@@ -10,20 +10,11 @@ interface IssueListProps {
     activeIssueId?: string | null;
 }
 
-const CATEGORY_LABELS: Record<IssueCategory, string> = {
-    accessibility: 'Accessibility',
-    readability: 'Readability',
-    layout: 'Layout',
-    mobile: 'Mobile',
-    navigation: 'Navigation',
-    contrast: 'Contrast',
-    'ux-heuristic': 'UX Heuristics',
-};
-
 const SEVERITY_ORDER: Record<Severity, number> = {
     critical: 0,
-    major: 1,
-    minor: 2,
+    high: 1,
+    medium: 2,
+    minor: 3,
 };
 
 export default function IssueList({ issues, onIssueClick, activeIssueId }: IssueListProps) {
@@ -63,14 +54,25 @@ export default function IssueList({ issues, onIssueClick, activeIssueId }: Issue
                             className={`${styles.chip} ${categoryFilter === 'all' ? styles.chipActive : ''}`}
                             onClick={() => setCategoryFilter('all')}
                         >All</button>
-                        {(Object.keys(CATEGORY_LABELS) as IssueCategory[]).map((cat) => (
+                        {[
+                            'User Navigation',
+                            'Visual Hierarchy',
+                            'Readability',
+                            'Forms & Input',
+                            'Calls-to-Action',
+                            'User Trust',
+                            'System Status',
+                            'Cognitive Load',
+                            'Mobile Usability',
+                            'Accessibility'
+                        ].map((cat) => (
                             categoryCounts[cat] ? (
                                 <button
                                     key={cat}
                                     className={`${styles.chip} ${categoryFilter === cat ? styles.chipActive : ''}`}
-                                    onClick={() => setCategoryFilter(cat)}
+                                    onClick={() => setCategoryFilter(cat as IssueCategory)}
                                 >
-                                    {CATEGORY_LABELS[cat]}
+                                    {cat}
                                     <span className={styles.chipCount}>{categoryCounts[cat]}</span>
                                 </button>
                             ) : null
@@ -85,7 +87,7 @@ export default function IssueList({ issues, onIssueClick, activeIssueId }: Issue
                             className={`${styles.chip} ${severityFilter === 'all' ? styles.chipActive : ''}`}
                             onClick={() => setSeverityFilter('all')}
                         >All</button>
-                        {(['critical', 'major', 'minor'] as Severity[]).map((sev) => (
+                        {(['critical', 'high', 'medium', 'minor'] as Severity[]).map((sev) => (
                             <button
                                 key={sev}
                                 className={`${styles.chip} ${styles[`chip_${sev}`]} ${severityFilter === sev ? styles.chipActive : ''}`}
@@ -122,9 +124,9 @@ export default function IssueList({ issues, onIssueClick, activeIssueId }: Issue
                             }}
                         >
                             <div className={styles.issueHeader}>
-                                <span className={`badge badge-${issue.severity}`}>{issue.severity}</span>
+                                <span className={`badge badge-${issue.severity.toLowerCase()}`}>{issue.severity}</span>
                                 <h3 className={styles.issueTitle}>{issue.title}</h3>
-                                <span className={styles.issueCat}>{CATEGORY_LABELS[issue.category]}</span>
+                                <span className={styles.issueCat}>{issue.category}</span>
                                 <svg
                                     className={`${styles.chevron} ${expandedId === issue.id ? styles.chevronOpen : ''}`}
                                     width="16" height="16" viewBox="0 0 16 16" fill="none"

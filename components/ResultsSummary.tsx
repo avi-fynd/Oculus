@@ -17,30 +17,15 @@ function getGradeColor(grade: string): string {
     }
 }
 
-function getCategoryColor(cat: string): string {
-    const colors: Record<string, string> = {
-        accessibility: 'var(--color-cat-accessibility)',
-        readability: 'var(--color-cat-readability)',
-        layout: 'var(--color-cat-layout)',
-        mobile: 'var(--color-cat-mobile)',
-        navigation: 'var(--color-cat-navigation)',
-        contrast: 'var(--color-cat-contrast)',
-        'ux-heuristic': 'var(--color-cat-heuristic)',
-    };
-    return colors[cat] || 'var(--color-accent)';
+function getCategoryColor(score: number): string {
+    if (score >= 90) return '#22c55e'; // Green
+    if (score >= 80) return '#fb923c'; // Orange
+    if (score >= 70) return '#facc15'; // Yellow
+    return '#ef4444'; // Red
 }
 
 function getCategoryLabel(cat: string): string {
-    const labels: Record<string, string> = {
-        accessibility: 'Accessibility',
-        readability: 'Readability',
-        layout: 'Layout',
-        mobile: 'Mobile',
-        navigation: 'Navigation',
-        contrast: 'Contrast',
-        'ux-heuristic': 'UX Heuristics',
-    };
-    return labels[cat] || cat;
+    return cat;
 }
 
 export default function ResultsSummary({ result }: ResultsSummaryProps) {
@@ -92,7 +77,7 @@ export default function ResultsSummary({ result }: ResultsSummaryProps) {
                             <div className={styles.barLabel}>
                                 <span
                                     className={styles.barDot}
-                                    style={{ background: getCategoryColor(cs.category) }}
+                                    style={{ background: getCategoryColor(cs.score) }}
                                 />
                                 <span>{getCategoryLabel(cs.category)}</span>
                                 <span className={styles.barIssueCount}>
@@ -104,7 +89,7 @@ export default function ResultsSummary({ result }: ResultsSummaryProps) {
                                     className={styles.barFill}
                                     style={{
                                         width: `${cs.score}%`,
-                                        background: getCategoryColor(cs.category),
+                                        background: getCategoryColor(cs.score),
                                     }}
                                 />
                             </div>
@@ -125,7 +110,7 @@ export default function ResultsSummary({ result }: ResultsSummaryProps) {
                     </h3>
                     {topIssues.map((issue) => (
                         <div key={issue.id} className={styles.topIssueCard}>
-                            <span className={`badge badge-${issue.severity}`}>{issue.severity}</span>
+                            <span className={`badge badge-${issue.severity.toLowerCase()}`}>{issue.severity}</span>
                             <div>
                                 <p className={styles.topIssueTitle}>{issue.title}</p>
                                 <p className={styles.topIssueDesc}>{issue.description}</p>

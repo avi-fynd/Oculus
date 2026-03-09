@@ -18,7 +18,7 @@ export function checkMobile(info: MobileInfo): AuditIssue[] {
         issues.push({
             id: 'mobile-no-viewport',
             title: 'Missing viewport meta tag',
-            category: 'mobile',
+            category: 'Mobile Usability',
             severity: 'critical',
             description: 'No <meta name="viewport"> tag found. The page will not render correctly on mobile devices.',
             evidence: 'No viewport meta tag in <head>',
@@ -32,7 +32,7 @@ export function checkMobile(info: MobileInfo): AuditIssue[] {
         issues.push({
             id: 'mobile-no-zoom',
             title: 'Text zoom is disabled',
-            category: 'mobile',
+            category: 'Mobile Usability',
             severity: 'critical',
             description: 'The viewport meta tag prevents users from zooming (user-scalable=no or maximum-scale=1).',
             evidence: `Viewport content: ${info.viewportContent}`,
@@ -49,8 +49,8 @@ export function checkMobile(info: MobileInfo): AuditIssue[] {
         issues.push({
             id: 'mobile-small-targets',
             title: `${info.smallTouchTargets} touch target(s) are too small`,
-            category: 'mobile',
-            severity: info.smallTouchTargets > 5 ? 'critical' : 'major',
+            category: 'Mobile Usability',
+            severity: info.smallTouchTargets > 5 ? 'critical' : 'high',
             description: `${info.smallTouchTargets} interactive elements (${pct}%) are smaller than the recommended 44×44px minimum.`,
             evidence: `${info.smallTouchTargets} of ${info.totalInteractiveElements} interactive elements are below 44×44px`,
             impact: 'Small touch targets are difficult to tap accurately, especially for users with motor impairments.',
@@ -63,8 +63,8 @@ export function checkMobile(info: MobileInfo): AuditIssue[] {
         issues.push({
             id: 'mobile-horizontal-scroll',
             title: 'Page has horizontal overflow on mobile',
-            category: 'mobile',
-            severity: 'major',
+            category: 'Mobile Usability',
+            severity: 'high',
             description: 'Content extends beyond the viewport width, causing horizontal scrolling on mobile.',
             evidence: 'Document width exceeds viewport width',
             impact: 'Horizontal scrolling on mobile is disorienting and makes content hard to access.',

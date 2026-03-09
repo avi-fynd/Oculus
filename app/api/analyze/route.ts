@@ -21,41 +21,30 @@ export async function POST(request: NextRequest) {
         let analysisUrl: string | undefined;
 
         if (inputType === 'url') {
-            // ─── URL Analysis ───────────────────────────────────────────────
+            // ─── URL Analysis (Pre-captured) ────────────────────────────────
             const url = formData.get('url') as string;
             if (!url) {
                 return NextResponse.json({ error: 'URL is required' }, { status: 400 });
             }
 
-            // Validate URL
-            try {
-                const parsed = new URL(url);
-                if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
-                    return NextResponse.json({ error: 'Invalid URL protocol' }, { status: 400 });
-                }
-            } catch {
-                return NextResponse.json({ error: 'Invalid URL format' }, { status: 400 });
-            }
-
             analysisUrl = url;
 
-            try {
-                const { captureUrl } = await import('../../../lib/capture');
-                const capture = await captureUrl(url);
+            // For URLs, the client now hits /api/capture first and passes the results here
+            screenshotBase64 = formData.get('screenshotBase64') as string;
+            screenshotDataUrl = formData.get('screenshotDataUrl') as string;
+            domSummary = formData.get('domSummary') as string || undefined;
 
-                screenshotBase64 = capture.screenshotBase64;
-                screenshotDataUrl = base64ToDataUrl(screenshotBase64, 'image/png');
-                domSummary = capture.domSummary;
+            const rawIssues = formData.get('programmaticIssues') as string;
+            if (rawIssues) {
+                try {
+                    programmaticIssues = JSON.parse(rawIssues);
+                } catch {
+                    console.warn("Failed to parse programmatic issues from payload");
+                }
+            }
 
-                // Run programmatic audit with real DOM data
-                programmaticIssues = runAudit(capture.domAnalysis);
-            } catch (captureError) {
-                console.error('Puppeteer capture failed:', captureError);
-                // Fall back: return error suggesting to try screenshot upload instead
-                return NextResponse.json(
-                    { error: 'Failed to capture the URL. The site may be blocking automated access. Try uploading a screenshot instead.' },
-                    { status: 422 }
-                );
+            if (!screenshotBase64) {
+                return NextResponse.json({ error: 'Missing pre-captured screenshot data' }, { status: 400 });
             }
         } else {
             // ─── Screenshot Analysis ────────────────────────────────────────
@@ -102,6 +91,7 @@ export async function POST(request: NextRequest) {
             aiResult.issues,
             aiResult.summary || 'Analysis complete.',
             analysisUrl,
+            aiResult.overallScore, // Use AI score if available
         );
 
         return NextResponse.json(result);

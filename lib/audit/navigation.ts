@@ -21,8 +21,8 @@ export function checkNavigation(info: NavigationInfo): AuditIssue[] {
         issues.push({
             id: 'nav-too-many-items',
             title: `Navigation has ${info.navLinkCount} items (too many)`,
-            category: 'navigation',
-            severity: info.navLinkCount > 10 ? 'major' : 'minor',
+            category: 'User Navigation',
+            severity: info.navLinkCount > 10 ? 'high' : 'minor',
             description: `The main navigation has ${info.navLinkCount} items. Research shows that 5–7 items is optimal for decision-making.`,
             evidence: `${info.navLinkCount} links in the primary navigation`,
             impact: "Too many navigation choices increase decision time (Hick's Law) and cognitive load.",
@@ -35,7 +35,7 @@ export function checkNavigation(info: NavigationInfo): AuditIssue[] {
         issues.push({
             id: 'nav-missing',
             title: 'No clear navigation structure found',
-            category: 'navigation',
+            category: 'User Navigation',
             severity: 'critical',
             description: 'No identifiable navigation area was detected on the page.',
             evidence: 'No <nav> element or navigation pattern detected',
@@ -49,7 +49,7 @@ export function checkNavigation(info: NavigationInfo): AuditIssue[] {
         issues.push({
             id: 'nav-no-breadcrumbs',
             title: 'No breadcrumb navigation on a complex page',
-            category: 'navigation',
+            category: 'User Navigation',
             severity: 'minor',
             description: 'The page has many links but no breadcrumb trail to help users understand their location.',
             evidence: `${info.totalLinks} links found with no breadcrumb pattern`,
@@ -63,7 +63,7 @@ export function checkNavigation(info: NavigationInfo): AuditIssue[] {
         issues.push({
             id: 'nav-no-search',
             title: 'No search functionality on a content-heavy page',
-            category: 'navigation',
+            category: 'User Navigation',
             severity: 'minor',
             description: 'The page has extensive content but no visible search feature.',
             evidence: `${info.totalLinks} links found with no search input detected`,

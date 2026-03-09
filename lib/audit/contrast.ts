@@ -62,8 +62,8 @@ export function checkContrast(colorPairs: ColorPair[]): AuditIssue[] {
             issues.push({
                 id: `contrast-fail-aa-${i}`,
                 title: `Low contrast ratio on ${pair.element}`,
-                category: 'contrast',
-                severity: ratio < 2 ? 'critical' : 'major',
+                category: 'Readability',
+                severity: ratio < 2 ? 'critical' : 'high',
                 description: `The text on "${pair.element}" has a contrast ratio of ${ratio.toFixed(2)}:1, which fails WCAG AA (minimum ${aaThreshold}:1).`,
                 evidence: `Foreground: ${pair.foreground}, Background: ${pair.background}, Ratio: ${ratio.toFixed(2)}:1`,
                 impact: 'Users with low vision or color blindness may not be able to read this content.',
@@ -74,7 +74,7 @@ export function checkContrast(colorPairs: ColorPair[]): AuditIssue[] {
             issues.push({
                 id: `contrast-fail-aaa-${i}`,
                 title: `Suboptimal contrast on ${pair.element}`,
-                category: 'contrast',
+                category: 'Readability',
                 severity: 'minor',
                 description: `The contrast ratio of ${ratio.toFixed(2)}:1 passes WCAG AA but fails AAA (${aaaThreshold}:1).`,
                 evidence: `Foreground: ${pair.foreground}, Background: ${pair.background}, Ratio: ${ratio.toFixed(2)}:1`,

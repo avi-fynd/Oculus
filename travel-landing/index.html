@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wanderlust — Discover the World</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand: #F5EFE6;
+      --ocean: #1A6B8A;
+      --coral: #E8613A;
+      --gold: #D4A853;
+      --dark: #1C1C2E;
+      --mid: #4A4A6A;
+      --light: #F9F7F4;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 60px;
+      background: rgba(28,28,46,0.85);
+      backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+    .logo span { color: var(--gold); }
+    nav ul {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    nav ul a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    .nav-cta {
+      background: var(--coral);
+      color: #fff !important;
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-weight: 600 !important;
+    }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      min-height: 700px;
+      background: linear-gradient(135deg, #0D2137 0%, #1A6B8A 50%, #0D4A5A 100%);
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 120px;
+      background: var(--light);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-content {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(212,168,83,0.15);
+      border: 1px solid rgba(212,168,83,0.3);
+      color: var(--gold);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 60px;
+      line-height: 1.1;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .hero p {
+      font-size: 17px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 440px;
+    }
+    .hero-actions { display: flex; gap: 16px; align-items: center; }
+    .btn-primary {
+      background: var(--coral);
+      color: #fff;
+      padding: 14px 32px;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-outline {
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 32px;
+      font-size: 15px;
+      font-weight: 500;
+      text-decoration: none;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 52px;
+      padding-top: 40px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .stat-item .num {
+      font-family: 'Playfair Display', serif;
+      font-size: 32px;
+      color: #fff;
+      font-weight: 700;
+    }
+    .stat-item .label {
+      font-size: 12px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+    .hero-visual {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .dest-card {
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      height: 200px;
+    }
+    .dest-card:first-child {
+      grid-column: 1 / -1;
+      height: 260px;
+    }
+    .dest-bg {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      position: relative;
+    }
+    .dest-bg-1 { background: linear-gradient(160deg, #2E8B6E 0%, #1A5540 100%); }
+    .dest-bg-2 { background: linear-gradient(160deg, #C05A2A 0%, #7A2D0A 100%); }
+    .dest-bg-3 { background: linear-gradient(160deg, #1A6B8A 0%, #0D3A50 100%); }
+    .dest-bg-1::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 70%;
+      background: rgba(0,0,0,0.15);
+      clip-path: polygon(0 60%, 20% 30%, 40% 50%, 60% 20%, 80% 45%, 100% 25%, 100% 100%, 0 100%);
+    }
+    .dest-bg-2::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60%;
+      background: rgba(0,0,0,0.2);
+      clip-path: polygon(0 100%, 0 40%, 30% 60%, 50% 30%, 70% 55%, 100% 35%, 100% 100%);
+    }
+    .dest-bg-3::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 50%;
+      background: rgba(255,255,255,0.06);
+      clip-path: polygon(0 100%, 0 50%, 15% 70%, 35% 40%, 55% 65%, 75% 35%, 100% 55%, 100% 100%);
+    }
+    .dest-label { position: relative; z-index: 1; }
+    .dest-label .name { font-size: 18px; font-weight: 700; color: #fff; font-family: 'Playfair Display', serif; }
+    .dest-label .tag { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 2px; }
+    .dest-rating {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 1;
+    }
+
+    /* SEARCH */
+    .search-wrap {
+      max-width: 1200px;
+      margin: -36px auto 0;
+      padding: 0 60px;
+      position: relative;
+      z-index: 10;
+    }
+    .search-bar {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      overflow: hidden;
+    }
+    .search-field {
+      padding: 20px 24px;
+      border-right: 1px solid #F0EDE8;
+    }
+    .search-field label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--mid);
+      margin-bottom: 4px;
+    }
+    .search-field input, .search-field select {
+      border: none;
+      outline: none;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+      font-weight: 500;
+      width: 100%;
+      background: transparent;
+    }
+    .search-btn {
+      background: var(--coral);
+      color: #fff;
+      border: none;
+      padding: 0 32px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+    }
+
+    /* TRUST BAR */
+    .trust-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 36px 60px;
+      background: var(--sand);
+      margin-top: 60px;
+    }
+    .trust-item { display: flex; align-items: center; gap: 12px; }
+    .trust-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--ocean);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    .trust-item strong { display: block; font-size: 14px; color: var(--dark); font-weight: 600; }
+    .trust-item span { font-size: 12px; color: var(--mid); }
+
+    /* SECTION */
+    .section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 60px;
+    }
+    .section-tag {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: var(--mid);
+      max-width: 500px;
+      line-height: 1.6;
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .see-all {
+      color: var(--ocean);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* PACKAGES */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .package-card {
+      background: #fff;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      position: relative;
+    }
+    .package-card.featured { border: 2px solid var(--gold); }
+    .featured-badge {
+      position: absolute;
+      top: 18px; right: 18px;
+      background: var(--gold);
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      z-index: 2;
+    }
+    .pkg-image { height: 220px; position: relative; overflow: hidden; }
+    .pkg-img-bg {
+      width: 100%; height: 100%;
+      position: relative;
+    }
+    .pkg-img-bg::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 55%;
+      background: rgba(0,0,0,0.15);
+    }
+    .pkg-img-bg::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60%;
+      background: linear-gradient(transparent, rgba(0,0,0,0.4));
+    }
+    .pkg-bg-1 { background: linear-gradient(140deg, #6CB4C0 0%, #1A6B8A 100%); }
+    .pkg-bg-2 { background: linear-gradient(140deg, #A8C97A 0%, #3D7A2E 100%); }
+    .pkg-bg-3 { background: linear-gradient(140deg, #E8A87C 0%, #C05A2A 100%); }
+    .pkg-bg-4 { background: linear-gradient(140deg, #B8A0D8 0%, #6B3FA0 100%); }
+    .pkg-bg-5 { background: linear-gradient(140deg, #F7C9C0 0%, #E8613A 100%); }
+    .pkg-bg-6 { background: linear-gradient(140deg, #9BD4C0 0%, #2E8B6E 100%); }
+    .pkg-bg-1::before { clip-path: polygon(0 60%, 15% 40%, 30% 55%, 45% 30%, 60% 50%, 75% 25%, 90% 45%, 100% 35%, 100% 100%, 0 100%); }
+    .pkg-bg-2::before { clip-path: polygon(0 50%, 20% 65%, 35% 40%, 50% 55%, 65% 35%, 80% 50%, 100% 30%, 100% 100%, 0 100%); }
+    .pkg-bg-3::before { clip-path: polygon(0 40%, 10% 55%, 25% 35%, 40% 50%, 55% 30%, 70% 45%, 85% 28%, 100% 40%, 100% 100%, 0 100%); }
+    .pkg-bg-4::before { clip-path: polygon(0 55%, 20% 40%, 35% 58%, 50% 38%, 65% 52%, 80% 35%, 100% 48%, 100% 100%, 0 100%); }
+    .pkg-bg-5::before { clip-path: polygon(0 45%, 18% 60%, 32% 42%, 48% 58%, 62% 38%, 78% 52%, 95% 35%, 100% 45%, 100% 100%, 0 100%); }
+    .pkg-bg-6::before { clip-path: polygon(0 50%, 12% 35%, 28% 52%, 42% 38%, 58% 55%, 72% 32%, 88% 48%, 100% 38%, 100% 100%, 0 100%); }
+    .pkg-duration {
+      position: absolute;
+      bottom: 14px; left: 16px;
+      z-index: 3;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      color: #fff;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .pkg-body { padding: 22px; }
+    .pkg-location { font-size: 12px; color: var(--mid); margin-bottom: 6px; }
+    .pkg-name { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--dark); margin-bottom: 10px; font-weight: 600; }
+    .pkg-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .pkg-tag { font-size: 11px; color: var(--ocean); background: rgba(26,107,138,0.08); padding: 3px 10px; border-radius: 8px; font-weight: 500; }
+    .pkg-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; border-top: 1px solid #F0EDE8; }
+    .pkg-rating { display: flex; align-items: center; gap: 5px; font-size: 13px; color: var(--dark); font-weight: 500; }
+    .stars { color: var(--gold); font-size: 12px; }
+    .pkg-price .from { font-size: 11px; color: var(--mid); }
+    .pkg-price .amount { font-size: 22px; font-weight: 700; color: var(--coral); font-family: 'Playfair Display', serif; }
+    .pkg-price .per { font-size: 11px; color: var(--mid); }
+
+    /* HOW IT WORKS */
+    .how-bg { background: var(--dark); padding: 80px 0; }
+    .how-inner { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+    .how-inner .section-title { color: #fff; }
+    .how-inner .section-sub { color: rgba(255,255,255,0.6); margin-bottom: 56px; }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 36px;
+      left: 10%; right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--coral), var(--gold), var(--ocean));
+      opacity: 0.4;
+    }
+    .step { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 12px; position: relative; }
+    .step-num {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 700;
+      margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+    .step:nth-child(1) .step-num { background: var(--coral); color: #fff; }
+    .step:nth-child(2) .step-num { background: var(--gold); color: #fff; }
+    .step:nth-child(3) .step-num { background: var(--ocean); color: #fff; }
+    .step:nth-child(4) .step-num { background: #2E8B6E; color: #fff; }
+    .step:nth-child(5) .step-num { background: #9B59B6; color: #fff; }
+    .step-title { font-size: 15px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+    .step-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+
+    /* EXPERIENCE */
+    .exp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .exp-card {
+      border-radius: 20px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      min-height: 200px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .exp-card:first-child { grid-row: span 2; min-height: 440px; }
+    .exp-bg-1 { background: linear-gradient(160deg, #1A6B8A 0%, #0D2137 100%); }
+    .exp-bg-2 { background: linear-gradient(160deg, #E8613A 0%, #8B2500 100%); }
+    .exp-bg-3 { background: linear-gradient(160deg, #2E8B6E 0%, #0D3D2A 100%); }
+    .exp-bg-4 { background: linear-gradient(160deg, #D4A853 0%, #7A5A1A 100%); }
+    .exp-card .icon { font-size: 36px; margin-bottom: 14px; }
+    .exp-card h3 { font-family: 'Playfair Display', serif; font-size: 22px; color: #fff; margin-bottom: 8px; }
+    .exp-card p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.6; }
+    .exp-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      color: #fff; padding: 4px 12px; border-radius: 12px;
+      font-size: 11px; font-weight: 600; margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.5px;
+    }
+
+    /* TESTIMONIALS */
+    .testi-bg { background: var(--sand); padding: 80px 0; }
+    .testi-inner { max-width: 1200px; margin: 0 auto; padding: 0 60px; }
+    .testi-inner .section-title { margin-bottom: 40px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testi-card { background: #fff; border-radius: 20px; padding: 28px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+    .testi-stars { color: var(--gold); font-size: 16px; margin-bottom: 12px; }
+    .testi-text { font-size: 15px; color: var(--mid); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 12px; }
+    .testi-avatar { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: #fff; }
+    .av1 { background: var(--coral); }
+    .av2 { background: var(--ocean); }
+    .av3 { background: var(--gold); }
+    .testi-name { font-weight: 600; font-size: 14px; color: var(--dark); }
+    .testi-trip { font-size: 12px; color: var(--mid); margin-top: 2px; }
+
+    /* CTA */
+    .cta-section { max-width: 1200px; margin: 80px auto; padding: 0 60px; }
+    .cta-inner {
+      background: linear-gradient(135deg, #1A6B8A 0%, #0D2137 100%);
+      border-radius: 32px; padding: 64px 80px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .cta-inner::before {
+      content: '';
+      position: absolute; right: -40px; top: -40px;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: rgba(212,168,83,0.08);
+    }
+    .cta-text { position: relative; z-index: 1; }
+    .cta-text h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: #fff; margin-bottom: 12px; line-height: 1.2; }
+    .cta-text p { font-size: 16px; color: rgba(255,255,255,0.7); }
+    .cta-actions { display: flex; gap: 14px; position: relative; z-index: 1; }
+    .btn-white { background: #fff; color: var(--dark); padding: 14px 32px; border-radius: 32px; font-size: 15px; font-weight: 700; text-decoration: none; }
+    .btn-outline-white { border: 1.5px solid rgba(255,255,255,0.4); color: #fff; padding: 14px 28px; border-radius: 32px; font-size: 15px; font-weight: 500; text-decoration: none; }
+
+    /* FOOTER */
+    footer { background: var(--dark); padding: 60px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; }
+    .footer-logo { font-family: 'Playfair Display', serif; font-size: 26px; color: #fff; margin-bottom: 14px; }
+    .footer-logo span { color: var(--gold); }
+    .footer-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 24px; }
+    .socials { display: flex; gap: 12px; }
+    .social-btn { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-size: 13px; color: rgba(255,255,255,0.6); font-weight: 600; }
+    .footer-col h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.4); margin-bottom: 20px; }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .footer-col ul a { font-size: 14px; color: rgba(255,255,255,0.65); text-decoration: none; }
+    .footer-bottom { background: var(--dark); border-top: 1px solid rgba(255,255,255,0.06); text-align: center; padding: 20px 60px; font-size: 13px; color: rgba(255,255,255,0.3); }
+  </style>
+<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Wander<span>lust</span></div>
+    <ul>
+      <li><a href="#">Destinations</a></li>
+      <li><a href="#">Packages</a></li>
+      <li><a href="#">Experiences</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#" class="nav-cta">Book Now</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="hero-badge">Award-Winning Travel Agency</div>
+        <h1>Explore the World with <em>Wanderlust</em></h1>
+        <p>Curated journeys to 120+ destinations. From serene beaches to mountain peaks, every trip is a masterpiece designed around you.</p>
+        <div class="hero-actions">
+          <a href="#" class="btn-primary">Explore Packages</a>
+          <a href="#" class="btn-outline">Watch Film</a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item"><div class="num">120+</div><div class="label">Destinations</div></div>
+          <div class="stat-item"><div class="num">50K+</div><div class="label">Happy Travellers</div></div>
+          <div class="stat-item"><div class="num">4.9</div><div class="label">Avg. Rating</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="dest-card">
+          <div class="dest-bg dest-bg-1">
+            <div class="dest-label">
+              <div class="name">Swiss Alps</div>
+              <div class="tag">Switzerland &middot; Europe</div>
+            </div>
+          </div>
+          <div class="dest-rating">4.9 Stars</div>
+        </div>
+        <div class="dest-card">
+          <div class="dest-bg dest-bg-2">
+            <div class="dest-label">
+              <div class="name">Machu Picchu</div>
+              <div class="tag">Peru &middot; South America</div>
+            </div>
+          </div>
+          <div class="dest-rating">4.8 Stars</div>
+        </div>
+        <div class="dest-card">
+          <div class="dest-bg dest-bg-3">
+            <div class="dest-label">
+              <div class="name">Maldives</div>
+              <div class="tag">Asia &middot; Indian Ocean</div>
+            </div>
+          </div>
+          <div class="dest-rating">5.0 Stars</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <div class="search-bar">
+      <div class="search-field">
+        <label>Where to?</label>
+        <input type="text" placeholder="Search destinations..." />
+      </div>
+      <div class="search-field">
+        <label>Check-in</label>
+        <input type="text" placeholder="Select date" />
+      </div>
+      <div class="search-field">
+        <label>Travellers</label>
+        <select><option>2 Adults, 0 Kids</option><option>1 Adult</option><option>Family of 4</option></select>
+      </div>
+      <button class="search-btn">Search Trips</button>
+    </div>
+  </div>
+
+  <!-- TRUST BAR -->
+  <div class="trust-bar">
+    <div class="trust-item">
+      <div class="trust-icon">&#128737;</div>
+      <div><strong>100% Secure Booking</strong><span>256-bit SSL encryption</span></div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">&#128260;</div>
+      <div><strong>Free Cancellation</strong><span>Up to 48h before departure</span></div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">&#128172;</div>
+      <div><strong>24/7 Support</strong><span>Dedicated travel concierge</span></div>
+    </div>
+    <div class="trust-item">
+      <div class="trust-icon">&#127942;</div>
+      <div><strong>Best Price Guarantee</strong><span>We match any lower price</span></div>
+    </div>
+  </div>
+
+  <!-- PACKAGES -->
+  <div class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-tag">Curated Packages</div>
+        <div class="section-title">Journeys for Every Soul</div>
+        <div class="section-sub">Hand-picked experiences from our travel experts, from romantic escapes to adventure expeditions.</div>
+      </div>
+      <a href="#" class="see-all">View All Packages</a>
+    </div>
+    <div class="packages-grid">
+
+      <div class="package-card featured">
+        <div class="featured-badge">Most Popular</div>
+        <div class="pkg-image">
+          <div class="pkg-img-bg pkg-bg-1"></div>
+          <div class="pkg-duration">8 Days / 7 Nights</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-location">Bali, Indonesia</div>
+          <div class="pkg-name">Bali Bliss &amp; Temples</div>
+          <div class="pkg-tags">
+            <span class="pkg-tag">Beach</span>
+            <span class="pkg-tag">Culture</span>
+            <span class="pkg-tag">Spa</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.9 (312)</div>
+            <div class="pkg-price">
+              <div class="from">from</div>
+              <div class="amount">$1,249</div>
+              <div class="per">/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="package-card">
+        <div class="pkg-image">
+          <div class="pkg-img-bg pkg-bg-2"></div>
+          <div class="pkg-duration">12 Days / 11 Nights</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-location">Patagonia, Argentina</div>
+          <div class="pkg-name">Patagonia Explorer</div>
+          <div class="pkg-tags">
+            <span class="pkg-tag">Trekking</span>
+            <span class="pkg-tag">Wildlife</span>
+            <span class="pkg-tag">Adventure</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.8 (189)</div>
+            <div class="pkg-price">
+              <div class="from">from</div>
+              <div class="amount">$2,890</div>
+              <div class="per">/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="package-card">
+        <div class="pkg-image">
+          <div class="pkg-img-bg pkg-bg-3"></div>
+          <div class="pkg-duration">5 Days / 4 Nights</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-location">Santorini, Greece</div>
+          <div class="pkg-name">Greek Islands Romance</div>
+          <div class="pkg-tags">
+            <span class="pkg-tag">Romantic</span>
+            <span class="pkg-tag">Luxury</span>
+            <span class="pkg-tag">Cruise</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 5.0 (441)</div>
+            <div class="pkg-price">
+              <div class="from">from</div>
+              <div class="amount">$1,790</div>
+              <div class="per">/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="package-card">
+        <div class="pkg-image">
+          <div class="pkg-img-bg pkg-bg-4"></div>
+          <div class="pkg-duration">10 Days / 9 Nights</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-location">Kyoto &amp; Tokyo, Japan</div>
+          <div class="pkg-name">Japan: Zen to Neon</div>
+          <div class="pkg-tags">
+            <span class="pkg-tag">Culture</span>
+            <span class="pkg-tag">Food</span>
+            <span class="pkg-tag">City</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 4.9 (267)</div>
+            <div class="pkg-price">
+              <div class="from">from</div>
+              <div class="amount">$2,390</div>
+              <div class="per">/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="package-card">
+        <div class="pkg-image">
+          <div class="pkg-img-bg pkg-bg-5"></div>
+          <div class="pkg-duration">7 Days / 6 Nights</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-location">Morocco</div>
+          <div class="pkg-name">Desert Dunes &amp; Medinas</div>
+          <div class="pkg-tags">
+            <span class="pkg-tag">Desert</span>
+            <span class="pkg-tag">History</span>
+            <span class="pkg-tag">Safari</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;</span> 4.7 (158)</div>
+            <div class="pkg-price">
+              <div class="from">from</div>
+              <div class="amount">$1,099</div>
+              <div class="per">/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="package-card">
+        <div class="pkg-image">
+          <div class="pkg-img-bg pkg-bg-6"></div>
+          <div class="pkg-duration">15 Days / 14 Nights</div>
+        </div>
+        <div class="pkg-body">
+          <div class="pkg-location">New Zealand</div>
+          <div class="pkg-name">NZ Grand Adventure</div>
+          <div class="pkg-tags">
+            <span class="pkg-tag">Nature</span>
+            <span class="pkg-tag">Adventure</span>
+            <span class="pkg-tag">Road Trip</span>
+          </div>
+          <div class="pkg-footer">
+            <div class="pkg-rating"><span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span> 5.0 (203)</div>
+            <div class="pkg-price">
+              <div class="from">from</div>
+              <div class="amount">$3,490</div>
+              <div class="per">/person</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="how-bg">
+    <div class="how-inner">
+      <div class="section-tag" style="color:var(--gold);">End-to-End Experience</div>
+      <div class="section-title">We Handle Everything</div>
+      <div class="section-sub">From your first search to the final farewell, your entire journey is seamlessly orchestrated.</div>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-title">Choose &amp; Customize</div>
+          <div class="step-desc">Pick a destination or package and tailor it to your style, budget, and dates</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-title">Expert Planning</div>
+          <div class="step-desc">Your dedicated travel designer creates a bespoke itinerary just for you</div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-title">Secure &amp; Book</div>
+          <div class="step-desc">Confirm flights, hotels, transfers and experiences in one place</div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-title">Travel with Ease</div>
+          <div class="step-desc">Fly, arrive and explore with a live concierge available 24/7</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-title">Share Memories</div>
+          <div class="step-desc">Return with stories, photos and a loyalty reward for next time</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCES -->
+  <div class="section">
+    <div class="section-tag">Included Experiences</div>
+    <div class="section-title">More Than Just a Trip</div>
+    <div class="section-sub" style="margin-bottom:40px;">Every package includes handpicked experiences that make your journey unforgettable.</div>
+    <div class="exp-grid">
+      <div class="exp-card exp-bg-1">
+        <div class="exp-tag">Signature</div>
+        <div class="icon">&#127968;</div>
+        <h3>Luxury Stays</h3>
+        <p>Boutique hotels, overwater villas, and mountain lodges. Only the finest hand-vetted accommodations make the cut.</p>
+      </div>
+      <div class="exp-card exp-bg-2">
+        <div class="icon">&#9992;</div>
+        <h3>Seamless Flights</h3>
+        <p>Business class upgrades, lounge access, and priority boarding. Travel in comfort from gate to gate.</p>
+      </div>
+      <div class="exp-card exp-bg-3">
+        <div class="icon">&#127869;</div>
+        <h3>Culinary Journeys</h3>
+        <p>Michelin-starred dinners, street food tours, and private cooking classes with local chefs.</p>
+      </div>
+      <div class="exp-card exp-bg-4">
+        <div class="icon">&#127956;</div>
+        <h3>Guided Adventures</h3>
+        <p>Expert local guides for hiking, diving, safaris, and cultural immersions at every destination.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testi-bg">
+    <div class="testi-inner">
+      <div class="section-tag">Real Traveller Stories</div>
+      <div class="section-title">Loved by 50,000+ Explorers</div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="testi-text">"Wanderlust made our honeymoon absolutely magical. Every detail, from the overwater bungalow to the sunset dinner, was perfection."</div>
+          <div class="testi-author">
+            <div class="testi-avatar av1">S</div>
+            <div>
+              <div class="testi-name">Sophia &amp; James</div>
+              <div class="testi-trip">Maldives Honeymoon Package</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="testi-text">"The Japan itinerary was unlike anything I imagined. Zen temples in Kyoto, then ramen bars in Tokyo. Absolutely balanced and brilliant."</div>
+          <div class="testi-author">
+            <div class="testi-avatar av2">M</div>
+            <div>
+              <div class="testi-name">Marcus T.</div>
+              <div class="testi-trip">Japan: Zen to Neon</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+          <div class="testi-text">"Trekking Patagonia with a guide who knew every trail was priceless. And the hotel in Torres del Paine? Breathtaking. 10/10 would do again."</div>
+          <div class="testi-author">
+            <div class="testi-avatar av3">A</div>
+            <div>
+              <div class="testi-name">Amara N.</div>
+              <div class="testi-trip">Patagonia Explorer</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Your Dream Trip Awaits.<br/>Let's Plan It Together.</h2>
+        <p>Talk to a travel expert today. Free consultation, no commitment.</p>
+      </div>
+      <div class="cta-actions">
+        <a href="#" class="btn-white">Start Planning</a>
+        <a href="#" class="btn-outline-white">Call Us</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div>
+      <div class="footer-logo">Wander<span>lust</span></div>
+      <div class="footer-desc">Crafting unforgettable journeys for modern explorers since 2010. 120+ destinations, 50K+ happy travellers.</div>
+      <div class="socials">
+        <div class="social-btn">f</div>
+        <div class="social-btn">in</div>
+        <div class="social-btn">ig</div>
+        <div class="social-btn">yt</div>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Destinations</h4>
+      <ul>
+        <li><a href="#">Europe</a></li>
+        <li><a href="#">Asia</a></li>
+        <li><a href="#">Americas</a></li>
+        <li><a href="#">Africa</a></li>
+        <li><a href="#">Oceania</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Packages</h4>
+      <ul>
+        <li><a href="#">Honeymoon</a></li>
+        <li><a href="#">Adventure</a></li>
+        <li><a href="#">Family</a></li>
+        <li><a href="#">Luxury</a></li>
+        <li><a href="#">Budget</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Press</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </footer>
+  <div class="footer-bottom">&copy; 2025 Wanderlust Travel Co. All rights reserved. &middot; Privacy Policy &middot; Terms of Service</div>
+
+</body>
+</html>

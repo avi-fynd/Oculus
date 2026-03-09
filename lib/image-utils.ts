@@ -4,7 +4,7 @@ import sharp from 'sharp';
 
 interface ProcessedImage {
     original: Buffer;
-    preview: Buffer;       // WebP, max 1200px wide
+    preview: Buffer;       // WebP, max 1400px wide
     analysis: Buffer;      // PNG, max 800px wide for AI analysis
     mimeType: string;
     width: number;
@@ -13,12 +13,12 @@ interface ProcessedImage {
 
 export async function processUploadedImage(buffer: Buffer): Promise<ProcessedImage> {
     const metadata = await sharp(buffer).metadata();
-    const width = metadata.width || 1200;
+    const width = metadata.width || 1400;
     const height = metadata.height || 800;
 
-    // Generate preview (WebP, max 1200px width)
+    // Generate preview (WebP, max 1400px width)
     const preview = await sharp(buffer)
-        .resize({ width: 1200, withoutEnlargement: true })
+        .resize({ width: 1400, withoutEnlargement: true })
         .webp({ quality: 85 })
         .toBuffer();
 

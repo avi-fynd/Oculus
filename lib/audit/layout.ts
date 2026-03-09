@@ -18,8 +18,8 @@ export function checkLayout(layout: LayoutInfo): AuditIssue[] {
         issues.push({
             id: 'layout-inconsistent-spacing',
             title: 'Inconsistent spacing throughout the page',
-            category: 'layout',
-            severity: layout.spacingVariance > 0.6 ? 'major' : 'minor',
+            category: 'Visual Hierarchy',
+            severity: layout.spacingVariance > 0.6 ? 'high' : 'minor',
             description: `Spacing between elements varies significantly (variance: ${(layout.spacingVariance * 100).toFixed(0)}%). Consistent spacing creates visual rhythm and improves scanability.`,
             evidence: `Spacing variance score: ${(layout.spacingVariance * 100).toFixed(0)}%`,
             impact: 'Inconsistent spacing makes the layout feel unpolished and harder to scan.',
@@ -32,8 +32,8 @@ export function checkLayout(layout: LayoutInfo): AuditIssue[] {
         issues.push({
             id: 'layout-high-density',
             title: 'Content is too densely packed',
-            category: 'layout',
-            severity: layout.contentDensity > 12 ? 'major' : 'minor',
+            category: 'Visual Hierarchy',
+            severity: layout.contentDensity > 12 ? 'high' : 'minor',
             description: `The page has a high content density (${layout.contentDensity.toFixed(1)} elements per 1000px²). This can overwhelm users.`,
             evidence: `Content density: ${layout.contentDensity.toFixed(1)} elements/1000px²`,
             impact: 'High density increases cognitive load and makes it difficult for users to focus on important content.',
@@ -46,8 +46,8 @@ export function checkLayout(layout: LayoutInfo): AuditIssue[] {
         issues.push({
             id: 'layout-no-hierarchy',
             title: 'Weak visual hierarchy',
-            category: 'layout',
-            severity: 'major',
+            category: 'Visual Hierarchy',
+            severity: 'high',
             description: 'The page lacks clear visual hierarchy. Elements appear to have similar visual weight, making it hard to identify what is most important.',
             evidence: 'No clear size/color/weight differentiation between primary and secondary content.',
             impact: 'Users cannot quickly identify the most important content or calls to action.',
@@ -60,7 +60,7 @@ export function checkLayout(layout: LayoutInfo): AuditIssue[] {
         issues.push({
             id: `layout-alignment-${i}`,
             title: `Alignment issue: ${issue}`,
-            category: 'layout',
+            category: 'Visual Hierarchy',
             severity: 'minor',
             description: `Elements appear misaligned: ${issue}`,
             evidence: issue,
